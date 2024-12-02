@@ -9,7 +9,8 @@
     "start": "npm run shell",
     "deploy": "firebase deploy --only functions",
     "logs": "firebase functions:log",
-    "start2": "npx tsc && firebase emulators:start --only functions"
+    "start2": "npx tsc && firebase emulators:start --only functions",
+    "deploy2": "npx tsc && npx eslint . --ext .ts,.js --fix && firebase deploy --only functions"
   },
   "engines": {
     "node": "18"

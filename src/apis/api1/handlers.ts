@@ -4,13 +4,13 @@ import { config } from '../../config';
 
 export const handlerCreate = async (req: Request, res: Response) => {
   try {
-    const { data } = req.body;
+    const { name } = req.body;
     const now = new Date();
     const user = (req as any).user;
     const firestore = admin.firestore();
     const groupDocumentRef = firestore.collection(config.collectionGroup);
     const newGroupRef = await groupDocumentRef.add({
-      name: data.name,
+      name: name,
       created_at: now,
       creator_id: user.user_id,
       members: [user.user_id],
@@ -28,13 +28,12 @@ export const handlerCreate = async (req: Request, res: Response) => {
 
 export const handlerDelete = async (req: Request, res: Response) => {
   try {
-    const { data } = req.body;
+    const { id } = req.body;
+    console.log('req.body', req.body);
+    console.log('data', id);
     const user = (req as any).user;
 
-    const docRef = admin
-      .firestore()
-      .collection(config.collectionGroup)
-      .doc(data.id);
+    const docRef = admin.firestore().collection(config.collectionGroup).doc(id);
     const docSnapshot = await docRef.get();
     if (!docSnapshot.exists) {
       return res.status(400).json({
@@ -58,13 +57,10 @@ export const handlerDelete = async (req: Request, res: Response) => {
 
 export const handlerJoin = async (req: Request, res: Response) => {
   try {
-    const { data } = req.body;
+    const { id } = req.body;
     const user = (req as any).user;
 
-    const docRef = admin
-      .firestore()
-      .collection(config.collectionGroup)
-      .doc(data.id);
+    const docRef = admin.firestore().collection(config.collectionGroup).doc(id);
     const docSnapshot = await docRef.get();
     if (!docSnapshot.exists) {
       return res.status(400).json({
@@ -85,19 +81,16 @@ export const handlerJoin = async (req: Request, res: Response) => {
       });
     }
   } catch (e) {
-    res.status(500).send(`server error: ${e}`);
+    return res.status(500).send(`server error: ${e}`);
   }
 };
 
 export const handlerLeave = async (req: Request, res: Response) => {
   try {
-    const { data } = req.body;
+    const { id } = req.body;
     const user = (req as any).user;
 
-    const docRef = admin
-      .firestore()
-      .collection(config.collectionGroup)
-      .doc(data.id);
+    const docRef = admin.firestore().collection(config.collectionGroup).doc(id);
     const docSnapshot = await docRef.get();
     if (!docSnapshot.exists) {
       return res.status(400).json({
@@ -118,6 +111,6 @@ export const handlerLeave = async (req: Request, res: Response) => {
       });
     }
   } catch (e) {
-    res.status(500).send(`server error: ${e}`);
+    return res.status(500).send(`server error: ${e}`);
   }
 };
