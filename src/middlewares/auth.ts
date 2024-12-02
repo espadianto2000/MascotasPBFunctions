@@ -1,5 +1,5 @@
-import * as admin from "firebase-admin";
-import { Request, Response, NextFunction } from "express";
+import * as admin from 'firebase-admin';
+import { Request, Response, NextFunction } from 'express';
 
 // Initialize Firebase Admin SDK
 admin.initializeApp({
@@ -13,15 +13,15 @@ export const authMiddleware = async (
 ): Promise<void> => {
   // Explicitly type as Promise<void>
   try {
-    const authHeader = req.headers["authorization"];
+    const authHeader = req.headers['authorization'];
     if (!authHeader) {
-      res.status(401).json({ message: "Unauthorized: No token provided" });
+      res.status(401).json({ message: 'Unauthorized: No token provided' });
       return; // Stop further execution, but do not return a value
     }
 
-    const token = authHeader.split(" ")[1];
+    const token = authHeader.split(' ')[1];
     if (!token) {
-      res.status(401).json({ message: "Unauthorized: Invalid token format" });
+      res.status(401).json({ message: 'Unauthorized: Invalid token format' });
       return; // Stop further execution, but do not return a value
     }
 
@@ -29,8 +29,8 @@ export const authMiddleware = async (
     (req as any).user = decodedToken;
     next(); // Continue to the next middleware/route handler
   } catch (error) {
-    console.error("Authentication error:", error);
-    res.status(401).json({ error: "Unauthorized" });
+    console.error('Authentication error:', error);
+    res.status(401).json({ error: 'Unauthorized' });
     return; // Stop further execution, but do not return a value
   }
 };

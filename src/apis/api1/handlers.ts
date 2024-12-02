@@ -1,6 +1,6 @@
-import { Request, Response } from "express";
-import * as admin from "firebase-admin";
-import { config } from "../../config";
+import { Request, Response } from 'express';
+import * as admin from 'firebase-admin';
+import { config } from '../../config';
 
 export const handlerCreate = async (req: Request, res: Response) => {
   try {
@@ -18,7 +18,7 @@ export const handlerCreate = async (req: Request, res: Response) => {
       pets: [],
     });
     return res.status(200).json({
-      message: "Successfull--Group Created",
+      message: 'Successfull--Group Created',
       newGroup: newGroupRef,
     });
   } catch (e) {
@@ -38,17 +38,17 @@ export const handlerDelete = async (req: Request, res: Response) => {
     const docSnapshot = await docRef.get();
     if (!docSnapshot.exists) {
       return res.status(400).json({
-        message: "Error--Group does not exist",
+        message: 'Error--Group does not exist',
       });
     }
     if (docSnapshot?.data()?.creator_id == user.user_id) {
       await docRef.delete();
       return res.status(200).json({
-        message: "Successfull--Group Deleted",
+        message: 'Successfull--Group Deleted',
       });
     } else {
       return res.status(401).json({
-        message: "Error--You are not group creator",
+        message: 'Error--You are not group creator',
       });
     }
   } catch (e) {
@@ -68,7 +68,7 @@ export const handlerJoin = async (req: Request, res: Response) => {
     const docSnapshot = await docRef.get();
     if (!docSnapshot.exists) {
       return res.status(400).json({
-        message: "Error--Group does not exist",
+        message: 'Error--Group does not exist',
       });
     }
     const currentMembers = docSnapshot.data()?.members;
@@ -77,11 +77,11 @@ export const handlerJoin = async (req: Request, res: Response) => {
         members: admin.firestore.FieldValue.arrayUnion(user.user_id),
       });
       return res.status(200).json({
-        message: "Successfull--Join Group",
+        message: 'Successfull--Join Group',
       });
     } else {
       return res.status(400).json({
-        message: "Error--You are already a member of the group",
+        message: 'Error--You are already a member of the group',
       });
     }
   } catch (e) {
@@ -101,7 +101,7 @@ export const handlerLeave = async (req: Request, res: Response) => {
     const docSnapshot = await docRef.get();
     if (!docSnapshot.exists) {
       return res.status(400).json({
-        message: "Error--Group does not exist",
+        message: 'Error--Group does not exist',
       });
     }
     const currentMembers = docSnapshot.data()?.members;
@@ -110,11 +110,11 @@ export const handlerLeave = async (req: Request, res: Response) => {
         members: admin.firestore.FieldValue.arrayRemove(user.user_id),
       });
       return res.status(200).json({
-        message: "Successfull--Leave Group",
+        message: 'Successfull--Leave Group',
       });
     } else {
       return res.status(400).json({
-        message: "Error--You are not a member of the group",
+        message: 'Error--You are not a member of the group',
       });
     }
   } catch (e) {
