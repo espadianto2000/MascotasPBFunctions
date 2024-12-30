@@ -5,4 +5,5 @@ dotenv.config();
 export const config = {
   collection: process.env.FB_COLLECTION || '',
   collectionGroup: process.env.FB_COLLECTION_GROUPS || '',
+  collectionPets: process.env.FB_COLLECTION_PETS || '',
 };
